@@ -1,15 +1,15 @@
-# 🖖 Captain's Log
+# 📓 Captain's Log
 
-**Stardate automation for the modern engineer.**
+**Your daily engineering journal, automated.**
 
-Captain's Log scrapes your daily GitHub commits and uses AI (Claude Sonnet 4.6) to generate Star Trek-styled developer journal entries — because every day in the codebase is a new frontier.
+Captain's Log scrapes your GitHub commits and uses AI (Claude Sonnet 4.6) to generate a reflective developer journal entry — written in the voice of an experienced software engineer summarizing the day's work.
 
 ## Features
 
 - **Multi-org commit scraping** — pulls commits from multiple GitHub orgs, including private repos
-- **AI-generated narratives** — Claude Sonnet 4.6 transforms raw commits into captain's log entries
+- **AI-generated narratives** — Claude Sonnet 4.6 transforms raw commits into thoughtful journal entries
 - **Privacy-first** — private repo names are anonymized, org names stripped, secrets redacted
-- **Nightly automation** — GitHub Actions generates entries at midnight EST and auto-commits
+- **Nightly automation** — GitHub Actions generates entries at midnight UTC and auto-commits
 - **CLI tools** — manual entries, specific dates, dry runs, and backfilling
 - **Pure markdown output** — logs stored by date in a clean directory structure
 
@@ -54,7 +54,7 @@ python log.py backfill --since 2026-01-01 --until 2026-03-01
 
 ## GitHub Actions
 
-The nightly workflow runs at midnight EST, generates the day's entry, and auto-commits it to the repo.
+The nightly workflow runs at midnight UTC, generates the previous day's entry, and auto-commits it to the repo.
 
 Add these as **repository secrets**:
 
@@ -72,8 +72,6 @@ logs/
         └── 2026-03-01.md
 ```
 
-Each file contains the AI-generated captain's log narrative for that stardate.
+Each file contains the AI-generated journal entry for that day.
 
 ---
-
-*"Space: the final frontier. These are the commits of a software engineer."*
