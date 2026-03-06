@@ -25,7 +25,7 @@ Fill in your `.env`:
 
 | Variable | Description |
 |---|---|
-| `GITHUB_TOKEN` | Personal access token (needs `repo` scope) |
+| `PERSONAL_GITHUB_TOKEN` | Personal access token (needs `repo` scope) |
 | `ANTHROPIC_API_KEY` | Anthropic API key for Claude |
 | `GITHUB_ORGS` | Comma-separated list of GitHub orgs to scrape |
 | `GITHUB_USERNAME` | Your GitHub username |
@@ -58,7 +58,7 @@ The nightly workflow runs at midnight EST, generates the day's entry, and auto-c
 
 Add these as **repository secrets**:
 
-- `GITHUB_TOKEN`
+- `PERSONAL_GITHUB_TOKEN`
 - `ANTHROPIC_API_KEY`
 
 ## Log Format

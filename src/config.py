@@ -16,7 +16,7 @@ def _find_project_root() -> Path:
 
 @dataclass
 class Config:
-    github_token: str
+    personal_github_token: str
     anthropic_api_key: str
     github_orgs: list[str] = field(default_factory=lambda: ["patshannon"])
     github_username: str = "patshannon"
@@ -26,7 +26,7 @@ class Config:
         project_root = _find_project_root()
         load_dotenv(project_root / ".env")
 
-        self.github_token = self._require("GITHUB_TOKEN")
+        self.personal_github_token = self._require("PERSONAL_GITHUB_TOKEN")
         self.anthropic_api_key = self._require("ANTHROPIC_API_KEY")
         self.github_orgs = [
             org.strip()

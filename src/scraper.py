@@ -12,7 +12,7 @@ def scrape_commits(
         until = since
 
     config = get_config()
-    g = Github(config.github_token)
+    g = Github(config.personal_github_token)
 
     # Use the Search API to find commits by author across all accessible repos —
     # far more efficient than iterating every repo in every org.
