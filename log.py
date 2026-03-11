@@ -2,8 +2,8 @@ import datetime
 
 import click
 
-from src.scraper import scrape_commits
-from src.sanitizer import sanitize_commits
+from src.scraper import scrape_daily_activity
+from src.sanitizer import sanitize_activity
 from src.generator import generate_log_entry
 from src.writer import write_log_entry, add_manual_entry
 
@@ -22,13 +22,17 @@ def cli():
 def generate(date, dry_run):
     target = date.date() if date else datetime.date.today()
 
-    click.echo(f"Scraping commits for {target}...")
-    commits = scrape_commits(since=target)
-
-    sanitized = sanitize_commits(commits)
+    click.echo(f"Scraping activity for {target}...")
+    activity = scrape_daily_activity(since=target)
+    sanitized = sanitize_activity(activity)
 
     click.echo("Generating log entry...")
-    narrative = generate_log_entry(date=target, commits=sanitized)
+    narrative = generate_log_entry(
+        date=target,
+        commits=sanitized["commits"],
+        pushes=sanitized["pushes"],
+        pull_requests=sanitized["pull_requests"],
+    )
 
     if dry_run:
         click.echo(narrative)
@@ -36,7 +40,7 @@ def generate(date, dry_run):
         path = write_log_entry(
             date=target,
             narrative=narrative,
-            commits=sanitized,
+            commits=sanitized["commits"],
             manual_entries=[],
         )
         click.echo(f"Written to {path}")
@@ -60,19 +64,24 @@ def backfill(since, until):
     current = start
 
     while current <= end:
-        click.echo(f"Scraping commits for {current}...")
-        commits = scrape_commits(since=current)
-
-        sanitized = sanitize_commits(commits)
+        click.echo(f"Scraping activity for {current}...")
+        activity = scrape_daily_activity(since=current)
+        sanitized = sanitize_activity(activity)
 
         click.echo(f"Generating log entry for {current}...")
-        narrative = generate_log_entry(date=current, commits=sanitized)
+        narrative = generate_log_entry(
+            date=current,
+            commits=sanitized["commits"],
+            pushes=sanitized["pushes"],
+            pull_requests=sanitized["pull_requests"],
+        )
 
         path = write_log_entry(
             date=current,
             narrative=narrative,
-            commits=sanitized,
+            commits=sanitized["commits"],
             manual_entries=[],
+            overwrite=True,
         )
         click.echo(f"Written to {path}")
 

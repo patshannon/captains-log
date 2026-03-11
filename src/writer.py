@@ -45,7 +45,8 @@ def _build_entry(date: datetime.date, narrative: str, commits: list[dict],
 
 
 def write_log_entry(date: datetime.date, narrative: str, commits: list[dict],
-                    manual_entries: list[str], log_dir: str = "logs") -> Path:
+                    manual_entries: list[str], log_dir: str = "logs",
+                    overwrite: bool = False) -> Path:
     """Write (or append to) a daily markdown log file.
 
     Returns the path to the written file.
@@ -55,7 +56,7 @@ def write_log_entry(date: datetime.date, narrative: str, commits: list[dict],
 
     entry = _build_entry(date, narrative, commits, manual_entries)
 
-    if path.exists():
+    if path.exists() and not overwrite:
         existing = path.read_text()
         path.write_text(existing.rstrip("\n") + "\n\n---\n\n" + entry)
     else:

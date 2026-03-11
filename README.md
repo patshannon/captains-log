@@ -6,7 +6,7 @@ Captain's Log scrapes your GitHub commits and uses AI (Claude Sonnet 4.6) to gen
 
 ## Features
 
-- **Multi-org commit scraping** — pulls commits from multiple GitHub orgs, including private repos
+- **Daily GitHub activity scraping** — pulls commits, pushes, and pull request activity across repos (including private repos)
 - **AI-generated narratives** — Claude Sonnet 4.6 transforms raw commits into thoughtful journal entries
 - **Privacy-first** — private repo names are anonymized, org names stripped, secrets redacted
 - **Nightly automation** — GitHub Actions generates entries at midnight UTC and auto-commits
