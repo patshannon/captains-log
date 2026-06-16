@@ -5,10 +5,20 @@ import click
 from src.scraper import scrape_daily_activity
 from src.sanitizer import sanitize_activity
 from src.generator import generate_log_entry
+from src.messages import pick_no_activity_message
 from src.writer import write_log_entry, add_manual_entry
 
 
 DATE_TYPE = click.DateTime(formats=["%Y-%m-%d"])
+
+
+def _has_activity(sanitized: dict) -> bool:
+    """Return True if any of commits / pushes / pull_requests is non-empty."""
+    return bool(
+        sanitized.get("commits")
+        or sanitized.get("pushes")
+        or sanitized.get("pull_requests")
+    )
 
 
 @click.group()
@@ -26,13 +36,17 @@ def generate(date, dry_run):
     activity = scrape_daily_activity(since=target)
     sanitized = sanitize_activity(activity)
 
-    click.echo("Generating log entry...")
-    narrative = generate_log_entry(
-        date=target,
-        commits=sanitized["commits"],
-        pushes=sanitized["pushes"],
-        pull_requests=sanitized["pull_requests"],
-    )
+    if _has_activity(sanitized):
+        click.echo("Generating log entry via OpenRouter...")
+        narrative = generate_log_entry(
+            date=target,
+            commits=sanitized["commits"],
+            pushes=sanitized["pushes"],
+            pull_requests=sanitized["pull_requests"],
+        )
+    else:
+        click.echo("No activity today — using a pre-written entry (no API call).")
+        narrative = pick_no_activity_message()
 
     if dry_run:
         click.echo(narrative)
@@ -68,13 +82,17 @@ def backfill(since, until):
         activity = scrape_daily_activity(since=current)
         sanitized = sanitize_activity(activity)
 
-        click.echo(f"Generating log entry for {current}...")
-        narrative = generate_log_entry(
-            date=current,
-            commits=sanitized["commits"],
-            pushes=sanitized["pushes"],
-            pull_requests=sanitized["pull_requests"],
-        )
+        if _has_activity(sanitized):
+            click.echo(f"Generating log entry for {current} via OpenRouter...")
+            narrative = generate_log_entry(
+                date=current,
+                commits=sanitized["commits"],
+                pushes=sanitized["pushes"],
+                pull_requests=sanitized["pull_requests"],
+            )
+        else:
+            click.echo(f"No activity on {current} — using pre-written entry.")
+            narrative = pick_no_activity_message()
 
         path = write_log_entry(
             date=current,

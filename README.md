@@ -2,12 +2,14 @@
 
 **Your daily engineering journal, automated.**
 
-Captain's Log scrapes your GitHub commits and uses AI (Claude Sonnet 4.6) to generate a reflective developer journal entry — written in the voice of an experienced software engineer summarizing the day's work.
+Captain's Log scrapes your GitHub commits and uses AI (via [OpenRouter](https://openrouter.ai/)) to generate a reflective developer journal entry — written in the voice of an experienced software engineer summarizing the day's work. Pick any model OpenRouter supports (Claude, GPT-4o, Gemini, Llama, etc.) and swap it any time via env var.
 
 ## Features
 
 - **Daily GitHub activity scraping** — pulls commits, pushes, and pull request activity across repos (including private repos)
-- **AI-generated narratives** — Claude Sonnet 4.6 transforms raw commits into thoughtful journal entries
+- **AI-generated narratives** — configurable model on OpenRouter transforms raw commits into thoughtful journal entries
+- **Model flexibility** — switch between providers by changing a single env var, no code changes
+- **No-activity fallback** — on days with zero commits/pushes/PRs, a pre-written entry is used and the AI is not called (saves cost, prevents hallucination)
 - **Privacy-first** — private repo names are anonymized, org names stripped, secrets redacted
 - **Nightly automation** — GitHub Actions generates entries at midnight UTC and auto-commits
 - **CLI tools** — manual entries, specific dates, dry runs, and backfilling
@@ -26,7 +28,8 @@ Fill in your `.env`:
 | Variable | Description |
 |---|---|
 | `PERSONAL_GITHUB_TOKEN` | Personal access token (needs `repo` scope) |
-| `ANTHROPIC_API_KEY` | Anthropic API key for Claude |
+| `OPENROUTER_API_KEY` | OpenRouter API key ([get one here](https://openrouter.ai/keys)) |
+| `AI_MODEL` | OpenRouter model ID (e.g. `anthropic/claude-sonnet-4.5`, `openai/gpt-4o`). Defaults to `anthropic/claude-sonnet-4.5`. |
 | `GITHUB_ORGS` | Comma-separated list of GitHub orgs to scrape |
 | `GITHUB_USERNAME` | Your GitHub username |
 
@@ -56,10 +59,11 @@ python log.py backfill --since 2026-01-01 --until 2026-03-01
 
 The nightly workflow runs at midnight UTC, generates the previous day's entry, and auto-commits it to the repo.
 
-Add these as **repository secrets**:
+Add these in repo **Settings → Secrets and variables → Actions**:
 
-- `PERSONAL_GITHUB_TOKEN`
-- `ANTHROPIC_API_KEY`
+- `PERSONAL_GITHUB_TOKEN` (secret)
+- `OPENROUTER_API_KEY` (secret)
+- `AI_MODEL` (variable — model names aren't sensitive, e.g. `anthropic/claude-sonnet-4.5`)
 
 ## Log Format
 

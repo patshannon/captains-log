@@ -28,7 +28,8 @@ jobs:
         run: python log.py generate --date $(date -u -d "yesterday" +%Y-%m-%d)
         env:
           PERSONAL_GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
           GITHUB_ORGS: "patshannon,bboxdigital,lavitrine"
           GITHUB_USERNAME: "patshannon"
 

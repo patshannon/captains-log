@@ -1,7 +1,7 @@
 import datetime
 from pathlib import Path
 
-import anthropic
+import openai
 
 from src.config import get_config
 
@@ -88,16 +88,21 @@ def generate_log_entry(
         manual_entries=manual_entries,
     )
 
-    client = anthropic.Anthropic(api_key=config.anthropic_api_key)
+    client = openai.OpenAI(
+        api_key=config.openrouter_api_key,
+        base_url="https://openrouter.ai/api/v1",
+    )
 
     try:
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
+        response = client.chat.completions.create(
+            model=config.ai_model,
             max_tokens=1024,
-            system=system_prompt,
-            messages=[{"role": "user", "content": user_message}],
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
         )
-    except anthropic.APIError as e:
-        raise RuntimeError(f"Anthropic API call failed: {e}") from e
+    except openai.APIError as e:
+        raise RuntimeError(f"OpenRouter API call failed: {e}") from e
 
-    return response.content[0].text
+    return response.choices[0].message.content

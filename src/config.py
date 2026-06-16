@@ -17,7 +17,8 @@ def _find_project_root() -> Path:
 @dataclass
 class Config:
     personal_github_token: str
-    anthropic_api_key: str
+    openrouter_api_key: str
+    ai_model: str
     github_orgs: list[str] = field(default_factory=lambda: ["patshannon"])
     github_username: str = "patshannon"
     log_dir: str = "logs"
@@ -27,7 +28,8 @@ class Config:
         load_dotenv(project_root / ".env")
 
         self.personal_github_token = self._require("PERSONAL_GITHUB_TOKEN")
-        self.anthropic_api_key = self._require("ANTHROPIC_API_KEY")
+        self.openrouter_api_key = self._require("OPENROUTER_API_KEY")
+        self.ai_model = os.getenv("AI_MODEL", "anthropic/claude-sonnet-4.5")
         self.github_orgs = [
             org.strip()
             for org in os.getenv("GITHUB_ORGS", "patshannon").split(",")
