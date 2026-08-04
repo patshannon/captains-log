@@ -29,7 +29,7 @@ class Config:
 
         self.personal_github_token = self._require("PERSONAL_GITHUB_TOKEN")
         self.openrouter_api_key = self._require("OPENROUTER_API_KEY")
-        self.ai_model = os.getenv("AI_MODEL", "anthropic/claude-sonnet-4.5")
+        self.ai_model = os.getenv("AI_MODEL", "anthropic/claude-sonnet-5")
         self.github_orgs = [
             org.strip()
             for org in os.getenv("GITHUB_ORGS", "patshannon").split(",")

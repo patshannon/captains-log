@@ -29,7 +29,7 @@ Fill in your `.env`:
 |---|---|
 | `PERSONAL_GITHUB_TOKEN` | Personal access token (needs `repo` scope) |
 | `OPENROUTER_API_KEY` | OpenRouter API key ([get one here](https://openrouter.ai/keys)) |
-| `AI_MODEL` | OpenRouter model ID (e.g. `anthropic/claude-sonnet-4.5`, `openai/gpt-4o`). Defaults to `anthropic/claude-sonnet-4.5`. |
+| `AI_MODEL` | OpenRouter model ID (e.g. `anthropic/claude-sonnet-5`, `openai/gpt-4o`). Defaults to `anthropic/claude-sonnet-5`. |
 | `GITHUB_ORGS` | Comma-separated list of GitHub orgs to scrape |
 | `GITHUB_USERNAME` | Your GitHub username |
 
@@ -63,7 +63,7 @@ Add these in repo **Settings → Secrets and variables → Actions**:
 
 - `PERSONAL_GITHUB_TOKEN` (secret)
 - `OPENROUTER_API_KEY` (secret)
-- `AI_MODEL` (variable — model names aren't sensitive, e.g. `anthropic/claude-sonnet-4.5`)
+- `AI_MODEL` (variable — model names aren't sensitive, e.g. `anthropic/claude-sonnet-5`)
 
 ## Log Format
 

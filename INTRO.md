@@ -14,7 +14,7 @@ UNKNOWNS
   - GCP function?
   - env support if deploying to GCP
 - Which AI model to use
-  - Was thinking Claude Sonnet 4.6 (best at creative writing) which I want.
+  - Uses Claude Sonnet 5 for creative writing.
 - Instructions for AI model.
 - Structure of each file
 - How to automatically commit new entry to github?
